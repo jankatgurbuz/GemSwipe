@@ -133,32 +133,10 @@ namespace Editor
             {
                 for (int j = 0; j < ColumnLength; j++)
                 {
-                    Create(i, j);
+                    _boardItem[i, j] =new Gem(i,j,GetRandomColor());
                 }
             }
-
-            // reflection
-            void Create(int i, int j)
-            {
-                var gem = new Gem();
-
-                const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
-                
-                var rowField = typeof(Gem).GetField("_row", flags);
-                if (rowField != null)
-                    rowField.SetValue(gem, i);
-                
-                var columnField = typeof(Gem).GetField("_column", flags);
-                if (columnField != null)
-                    columnField.SetValue(gem, j);
-
-                var colorsProperty = typeof(Gem).GetField("_color",flags);
-                if (colorsProperty != null)
-                    colorsProperty.SetValue(gem, GetRandomColor());
-
-                _boardItem[i, j] = gem;
-            }
-
+            
             _toggles = new bool [ColumnLength];
 
             for (int i = 0; i < ColumnLength; i++)

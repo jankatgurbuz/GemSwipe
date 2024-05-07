@@ -15,455 +15,455 @@ MonoBehaviour:
   RowLength: 8
   ColumnLength: 8
   BoardItem:
-  - rid: 7831880871034487104
-  - rid: 7831880871034487105
-  - rid: 7831880871034487106
-  - rid: 7831880871034487107
-  - rid: 7831880871034487108
-  - rid: 7831880871034487109
-  - rid: 7831880871034487110
-  - rid: 7831880871034487111
-  - rid: 7831880871034487112
-  - rid: 7831880871034487113
-  - rid: 7831880871034487114
-  - rid: 7831880871034487115
-  - rid: 7831880871034487116
-  - rid: 7831880871034487117
-  - rid: 7831880871034487118
-  - rid: 7831880871034487119
-  - rid: 7831880871034487120
-  - rid: 7831880871034487121
-  - rid: 7831880871034487122
-  - rid: 7831880871034487123
-  - rid: 7831880871034487124
-  - rid: 7831880871034487125
-  - rid: 7831880871034487126
-  - rid: 7831880871034487127
-  - rid: 7831880871034487128
-  - rid: 7831880871034487129
-  - rid: 7831880871034487130
-  - rid: 7831880871034487131
-  - rid: 7831880871034487132
-  - rid: 7831880871034487133
-  - rid: 7831880871034487134
-  - rid: 7831880871034487135
-  - rid: 7831880871034487136
-  - rid: 7831880871034487137
-  - rid: 7831880871034487138
-  - rid: 7831880871034487139
-  - rid: 7831880871034487140
-  - rid: 7831880871034487141
-  - rid: 7831880871034487142
-  - rid: 7831880871034487143
-  - rid: 7831880871034487144
-  - rid: 7831880871034487145
-  - rid: 7831880871034487146
-  - rid: 7831880871034487147
-  - rid: 7831880871034487148
-  - rid: 7831880871034487149
-  - rid: 7831880871034487150
-  - rid: 7831880871034487151
-  - rid: 7831880871034487152
-  - rid: 7831880871034487153
-  - rid: 7831880871034487154
-  - rid: 7831880871034487155
-  - rid: 7831880871034487156
-  - rid: 7831880871034487157
-  - rid: 7831880871034487158
-  - rid: 7831880871034487159
-  - rid: 7831880871034487160
-  - rid: 7831880871034487161
-  - rid: 7831880871034487162
-  - rid: 7831880871034487163
-  - rid: 7831880871034487164
-  - rid: 7831880871034487165
-  - rid: 7831880871034487166
-  - rid: 7831880871034487167
-  ColumnGenerationFlags: 0101010100010101
+  - rid: 7831880871034487168
+  - rid: 7831880871034487169
+  - rid: 7831880871034487170
+  - rid: 7831880871034487171
+  - rid: 7831880871034487172
+  - rid: 7831880871034487173
+  - rid: 7831880871034487174
+  - rid: 7831880871034487175
+  - rid: 7831880871034487176
+  - rid: 7831880871034487177
+  - rid: 7831880871034487178
+  - rid: 7831880871034487179
+  - rid: 7831880871034487180
+  - rid: 7831880871034487181
+  - rid: 7831880871034487182
+  - rid: 7831880871034487183
+  - rid: 7831880871034487184
+  - rid: 7831880871034487185
+  - rid: 7831880871034487186
+  - rid: 7831880871034487187
+  - rid: 7831880871034487188
+  - rid: 7831880871034487189
+  - rid: 7831880871034487190
+  - rid: 7831880871034487191
+  - rid: 7831880871034487192
+  - rid: 7831880871034487193
+  - rid: 7831880871034487194
+  - rid: 7831880871034487195
+  - rid: 7831880871034487196
+  - rid: 7831880871034487197
+  - rid: 7831880871034487198
+  - rid: 7831880871034487199
+  - rid: 7831880871034487200
+  - rid: 7831880871034487201
+  - rid: 7831880871034487202
+  - rid: 7831880871034487203
+  - rid: 7831880871034487204
+  - rid: 7831880871034487205
+  - rid: 7831880871034487206
+  - rid: 7831880871034487207
+  - rid: 7831880871034487208
+  - rid: 7831880871034487209
+  - rid: 7831880871034487210
+  - rid: 7831880871034487211
+  - rid: 7831880871034487212
+  - rid: 7831880871034487213
+  - rid: 7831880871034487214
+  - rid: 7831880871034487215
+  - rid: 7831880871034487216
+  - rid: 7831880871034487217
+  - rid: 7831880871034487218
+  - rid: 7831880871034487219
+  - rid: 7831880871034487220
+  - rid: 7831880871034487221
+  - rid: 7831880871034487222
+  - rid: 7831880871034487223
+  - rid: 7831880871034487224
+  - rid: 7831880871034487225
+  - rid: 7831880871034487226
+  - rid: 7831880871034487227
+  - rid: 7831880871034487228
+  - rid: 7831880871034487229
+  - rid: 7831880871034487230
+  - rid: 7831880871034487231
+  ColumnGenerationFlags: 0101000001010101
   references:
     version: 2
     RefIds:
-    - rid: 7831880871034487104
+    - rid: 7831880871034487168
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 0
-        _color: 4
-    - rid: 7831880871034487105
+        _color: 2
+    - rid: 7831880871034487169
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 1
-        _color: 3
-    - rid: 7831880871034487106
+        _color: 1
+    - rid: 7831880871034487170
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 2
-        _color: 1
-    - rid: 7831880871034487107
+        _color: 4
+    - rid: 7831880871034487171
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 3
         _color: 3
-    - rid: 7831880871034487108
+    - rid: 7831880871034487172
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 4
-        _color: 3
-    - rid: 7831880871034487109
+        _color: 1
+    - rid: 7831880871034487173
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 5
-        _color: 3
-    - rid: 7831880871034487110
+        _color: 2
+    - rid: 7831880871034487174
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 6
-        _color: 3
-    - rid: 7831880871034487111
+        _color: 2
+    - rid: 7831880871034487175
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 0
         _column: 7
-        _color: 4
-    - rid: 7831880871034487112
+        _color: 1
+    - rid: 7831880871034487176
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 0
-        _color: 1
-    - rid: 7831880871034487113
+        _color: 2
+    - rid: 7831880871034487177
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 1
         _color: 4
-    - rid: 7831880871034487114
+    - rid: 7831880871034487178
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 2
-        _color: 1
-    - rid: 7831880871034487115
+        _color: 2
+    - rid: 7831880871034487179
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 3
-        _color: 2
-    - rid: 7831880871034487116
+        _color: 3
+    - rid: 7831880871034487180
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 4
         _color: 2
-    - rid: 7831880871034487117
+    - rid: 7831880871034487181
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 5
-        _color: 4
-    - rid: 7831880871034487118
+        _color: 2
+    - rid: 7831880871034487182
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 6
-        _color: 1
-    - rid: 7831880871034487119
+        _color: 4
+    - rid: 7831880871034487183
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 1
         _column: 7
-        _color: 3
-    - rid: 7831880871034487120
+        _color: 2
+    - rid: 7831880871034487184
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 0
         _color: 3
-    - rid: 7831880871034487121
+    - rid: 7831880871034487185
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 1
         _color: 2
-    - rid: 7831880871034487122
+    - rid: 7831880871034487186
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 2
-        _color: 2
-    - rid: 7831880871034487123
+        _color: 1
+    - rid: 7831880871034487187
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 3
-        _color: 4
-    - rid: 7831880871034487124
+        _color: 3
+    - rid: 7831880871034487188
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 4
-        _color: 3
-    - rid: 7831880871034487125
+        _color: 2
+    - rid: 7831880871034487189
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 5
-        _color: 1
-    - rid: 7831880871034487126
+        _color: 3
+    - rid: 7831880871034487190
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 6
-        _color: 1
-    - rid: 7831880871034487127
+        _color: 4
+    - rid: 7831880871034487191
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 2
         _column: 7
-        _color: 4
-    - rid: 7831880871034487128
+        _color: 2
+    - rid: 7831880871034487192
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 0
-        _color: 3
-    - rid: 7831880871034487129
+        _color: 4
+    - rid: 7831880871034487193
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 1
-        _color: 4
-    - rid: 7831880871034487130
+        _color: 1
+    - rid: 7831880871034487194
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 2
         _color: 3
-    - rid: 7831880871034487131
+    - rid: 7831880871034487195
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 3
         _color: 1
-    - rid: 7831880871034487132
+    - rid: 7831880871034487196
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 4
         _color: 4
-    - rid: 7831880871034487133
+    - rid: 7831880871034487197
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 5
-        _color: 4
-    - rid: 7831880871034487134
+        _color: 2
+    - rid: 7831880871034487198
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 6
-        _color: 4
-    - rid: 7831880871034487135
+        _color: 1
+    - rid: 7831880871034487199
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 3
         _column: 7
-        _color: 1
-    - rid: 7831880871034487136
+        _color: 2
+    - rid: 7831880871034487200
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 0
-        _color: 1
-    - rid: 7831880871034487137
+        _color: 2
+    - rid: 7831880871034487201
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 1
-        _color: 2
-    - rid: 7831880871034487138
+        _color: 4
+    - rid: 7831880871034487202
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 2
         _color: 1
-    - rid: 7831880871034487139
+    - rid: 7831880871034487203
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 3
-        _color: 4
-    - rid: 7831880871034487140
+        _color: 2
+    - rid: 7831880871034487204
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 4
         _color: 2
-    - rid: 7831880871034487141
+    - rid: 7831880871034487205
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 5
         _color: 1
-    - rid: 7831880871034487142
+    - rid: 7831880871034487206
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 6
-        _color: 4
-    - rid: 7831880871034487143
+        _color: 1
+    - rid: 7831880871034487207
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 4
         _column: 7
         _color: 1
-    - rid: 7831880871034487144
+    - rid: 7831880871034487208
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 0
-        _color: 4
-    - rid: 7831880871034487145
+        _color: 2
+    - rid: 7831880871034487209
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 1
-        _color: 1
-    - rid: 7831880871034487146
+        _color: 2
+    - rid: 7831880871034487210
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 2
         _color: 2
-    - rid: 7831880871034487147
+    - rid: 7831880871034487211
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 3
-        _color: 4
-    - rid: 7831880871034487148
+        _color: 1
+    - rid: 7831880871034487212
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 4
-        _color: 4
-    - rid: 7831880871034487149
+        _color: 3
+    - rid: 7831880871034487213
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 5
-        _color: 3
-    - rid: 7831880871034487150
+        _color: 2
+    - rid: 7831880871034487214
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 6
         _color: 4
-    - rid: 7831880871034487151
+    - rid: 7831880871034487215
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 5
         _column: 7
         _color: 4
-    - rid: 7831880871034487152
+    - rid: 7831880871034487216
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 0
-        _color: 2
-    - rid: 7831880871034487153
+        _color: 1
+    - rid: 7831880871034487217
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 1
-        _color: 4
-    - rid: 7831880871034487154
+        _color: 3
+    - rid: 7831880871034487218
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 2
-        _color: 2
-    - rid: 7831880871034487155
+        _color: 4
+    - rid: 7831880871034487219
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 3
         _color: 4
-    - rid: 7831880871034487156
+    - rid: 7831880871034487220
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 4
-        _color: 1
-    - rid: 7831880871034487157
+        _color: 4
+    - rid: 7831880871034487221
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 5
         _color: 2
-    - rid: 7831880871034487158
+    - rid: 7831880871034487222
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 6
-        _color: 3
-    - rid: 7831880871034487159
+        _color: 4
+    - rid: 7831880871034487223
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 6
         _column: 7
         _color: 3
-    - rid: 7831880871034487160
+    - rid: 7831880871034487224
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 0
-        _color: 2
-    - rid: 7831880871034487161
+        _color: 1
+    - rid: 7831880871034487225
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 1
         _color: 1
-    - rid: 7831880871034487162
+    - rid: 7831880871034487226
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 2
-        _color: 3
-    - rid: 7831880871034487163
+        _color: 4
+    - rid: 7831880871034487227
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 3
-        _color: 1
-    - rid: 7831880871034487164
+        _color: 4
+    - rid: 7831880871034487228
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 4
-        _color: 1
-    - rid: 7831880871034487165
+        _color: 4
+    - rid: 7831880871034487229
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 5
-        _color: 1
-    - rid: 7831880871034487166
+        _color: 2
+    - rid: 7831880871034487230
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 6
-        _color: 2
-    - rid: 7831880871034487167
+        _color: 4
+    - rid: 7831880871034487231
       type: {class: Gem, ns: BoardItems, asm: Assembly-CSharp}
       data:
         _row: 7
         _column: 7
-        _color: 1
+        _color: 3
