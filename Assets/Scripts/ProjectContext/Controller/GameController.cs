@@ -24,7 +24,12 @@ namespace ProjectContext.Controller
 
         public void StartGame()
         {
-           // _signalBus.Fire(new GameStateReaction(GameStatus.StartGame));
+            _signalBus.Fire(new GameStateReaction(GameStatus.StartGame));
+        }
+
+        public void RestartGame()
+        {
+            _signalBus.Fire(new GameStateReaction(GameStatus.Restart));
         }
     }
 }

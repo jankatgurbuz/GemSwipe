@@ -13,9 +13,11 @@ namespace SceneContext.Installer
         {
             Container.BindInterfacesAndSelfTo<Initializer>().AsSingle().NonLazy();
             Container.Bind(typeof(IStartable), typeof(InGameController)).To<InGameController>().AsSingle().NonLazy();
+            Container.Bind(typeof(IStartable), typeof(InteractionController)).To<InteractionController>().AsSingle().NonLazy();
             Container.Bind(typeof(IStartable), typeof(BoardItemController)).To<BoardItemController>().AsSingle()
                 .NonLazy();
             Container.Bind<IGridController>().To<GridController>().AsSingle().WithArguments(_gridView).NonLazy();
+        
         }
     }
 }

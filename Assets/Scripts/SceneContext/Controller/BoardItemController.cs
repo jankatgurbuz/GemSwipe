@@ -44,9 +44,7 @@ namespace SceneContext.Controller
                     var item =TilePool.Instance.Retrieve();
                     item.SetPosition(_gridController.CellToLocal(row, column));
                 }
-            }
-            
-            
+            }  
         }
 
         private void AdjustBoardItems()
