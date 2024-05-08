@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Util.Handlers.Visitors;
 using Util.Pool;
@@ -13,7 +14,7 @@ namespace BoardItems
         public int Row => _row;
         public int Column => _column;
         public bool IsGem { get; set; } = false;
-
+        public bool IsMove { get; set; } = false;
         public abstract IBoardItem Copy();
 
         public virtual IBoardItemVisitor BoardVisitor
@@ -35,7 +36,24 @@ namespace BoardItems
             PoolFactory.Instance.ReturnToPool(Item);
         }
 
+        public async UniTask Pop()
+        {
+            if (Item == null)
+            {
+                return;
+            }
+            // score 
+            await Item.Pop();
+            ReturnToPool();
+        }
+
         protected BaseBoardItem(int row, int column)
+        {
+            _row = row;
+            _column = column;
+        }
+        
+        public void SetRowAndColumn(int row, int column)
         {
             _row = row;
             _column = column;
