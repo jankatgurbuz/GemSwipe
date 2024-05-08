@@ -7,6 +7,7 @@ using Signals;
 using UnityEngine;
 using Util.Pool.Tile;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace SceneContext.Controller
 {
@@ -15,6 +16,7 @@ namespace SceneContext.Controller
     {
         private readonly IGridController _gridController;
         private readonly InGameController _inGameController;
+        private readonly MovementController _movementController;
 
         private int _rowLength = 0;
         private int _columnLength = 0;
@@ -25,10 +27,11 @@ namespace SceneContext.Controller
         private List<IBoardItem> _tempMatchItems;
 
         public BoardItemController(SignalBus signalBus, IGridController gridController,
-            InGameController inGameController)
+            InGameController inGameController, MovementController movementController)
         {
             _inGameController = inGameController;
             _gridController = gridController;
+            _movementController = movementController;
             signalBus.Subscribe<GameStateReaction>(OnReaction);
         }
 
@@ -82,7 +85,7 @@ namespace SceneContext.Controller
             }
         }
 
-        private void CheckPop()
+        public void CheckPop()
         {
             for (int i = 0; i < _rowLength; i++)
             {
@@ -133,7 +136,7 @@ namespace SceneContext.Controller
         private void FindMatches(int row, int column, ItemColors color, bool rowOrColumn, List<IBoardItem> combineItems)
         {
             if (row < 0 || column < 0 || row >= _rowLength || column >= _columnLength ||
-                _recursiveCheckArray[row, column])
+                _recursiveCheckArray[row, column] || _boardItems[row, column].IsMove)
                 return;
 
             _recursiveCheckArray[row, column] = true;
@@ -155,15 +158,17 @@ namespace SceneContext.Controller
 
         private void RecalculateBoardElements()
         {
-            for (int row = 0; row < _rowLength; row++)
+            for (int column = 0; column < _columnLength; column++)
             {
-                for (int column = 0; column < _columnLength; column++)
+                float delay = 0;
+                int createPos = 0;
+                for (int row = 0; row < _rowLength; row++)
                 {
-                    ShiftBeadDown(_boardItems[row, column]);
+                    ShiftBeadDown(_boardItems[row, column], ref delay,ref createPos);
                 }
             }
 
-            void ShiftBeadDown(IBoardItem boardItem)
+            void ShiftBeadDown(IBoardItem boardItem, ref float delay,ref int createPos)
             {
                 if (boardItem.IsGem)
                     return;
@@ -171,27 +176,43 @@ namespace SceneContext.Controller
                 var column = boardItem.Column;
                 var row = boardItem.Row;
 
-                if (row >= _rowLength)
+                for (int i = row + 1; i <= _rowLength; i++)
                 {
-                    // todo: Beads falling above
-                }
+                    if (i < _rowLength && _boardItems[i, column].IsGem)
+                    {
+                        var item = _boardItems[row, column] = _boardItems[i, column];
+                        _boardItems[i, column] = new VoidArea(i, column);
+                        item.SetRowAndColumn(row, column);
+                        Adjust(item, ref delay, i, column);
+                        break;
+                    }
 
-                for (int i = row + 1; i < _rowLength; i++)
-                {
-                    if (!_boardItems[i, column].IsGem)
-                        continue;
+                    if (i == _rowLength)
+                    {
+                        var item = _boardItems[row, column] = new Gem(row, column, GetRandomColor());
+                        _boardItems[row, column].RetrieveFromPool();
+                        _boardItems[row, column]
+                            .SetPosition(_gridController.CellToLocal(_rowLength+createPos, column));
+                        _boardItems[row, column].SetActive(true);
+                        _boardItems[row, column]?.BoardVisitor?.Gem.SetColorAndAddSprite();
 
-                    //swap
-                    var item = _boardItems[row, column] = _boardItems[i, column];
-                    item.SetRowAndColumn(row, column);
-                    item.IsMove = true;
-                    //  _movementController.Register(item, i, column);
-                    _boardItems[i, column] = new VoidArea(i, column);
-                    //item.SetPosition(_gridController.CellToLocal(row, column));
-
-                    break;
+                        Adjust(item, ref delay, row, column);
+                        createPos++;
+                    }
                 }
             }
+        }
+
+        private ItemColors GetRandomColor()
+        {
+            return (ItemColors)Random.Range(1, Enum.GetValues(typeof(ItemColors)).Length);
+        }
+
+        private void Adjust(IBoardItem item, ref float delay, int row, int column)
+        {
+            item.IsMove = true;
+            _movementController.Register(item, row, column, delay);
+             delay += 0.1f;
         }
 
 
@@ -201,6 +222,7 @@ namespace SceneContext.Controller
 
             if (CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn))
             {
+                CheckPop();
             }
         }
 
@@ -211,44 +233,3 @@ namespace SceneContext.Controller
         }
     }
 }
-
-
-// private void CheckPop()
-// {
-//     List<IBoardItem> allCombinedItems = new List<IBoardItem>();
-//     for (int i = 0; i < _rowLength; i++)
-//     {
-//         for (int j = 0; j < _columnLength; j++)
-//         {
-//             if (!_boardItems[i, j].IsGem) continue;
-//
-//             var rowList = new List<IBoardItem>();
-//             FindMatches(i, j, true, rowList);
-//
-//             var columnList = new List<IBoardItem>();
-//             FindMatches(i, j, false, columnList);
-//
-//             var combinedList = rowList.Count > 2 ? new List<IBoardItem>(rowList) : new List<IBoardItem>();
-//
-//             if (columnList.Count > 2)
-//             {
-//                 foreach (IBoardItem item in columnList)
-//                 {
-//                     if (!combinedList.Contains(item))
-//                     {
-//                         combinedList.Add(item);
-//                     }
-//                 }
-//             }
-//
-//             if (combinedList.Count > 0)
-//             {
-//                 allCombinedItems.AddRange(combinedList);
-//             }
-//         }
-//     }
-//
-//     allCombinedItems.ForEach(item => item.Pop());
-//     FillVoidType(allCombinedItems);
-//     RecalculateBoardElements();
-// }

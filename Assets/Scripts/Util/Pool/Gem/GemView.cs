@@ -2,10 +2,11 @@ using BoardItems;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using Util.Handlers.Strategies;
 
 namespace Util.Pool.Gem
 {
-    public class GemView : MonoBehaviour, IPoolable, IItemBehavior
+    public class GemView : MonoBehaviour, IPoolable, IItemBehavior,IMoveable
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private SOGemSettings _gemSettings;
@@ -70,12 +71,23 @@ namespace Util.Pool.Gem
 
         public async UniTask Pop()
         {
-            await _transform.DOScale(Vector3.zero, 1).AsyncWaitForCompletion().AsUniTask();
+            await _transform.DOScale(Vector3.zero, 0.1f).AsyncWaitForCompletion().AsUniTask();
         }
 
         public void SetColorAndAddSprite(ItemColors color)
         {
             _spriteRenderer.sprite = _gemSettings[color];
+        }
+
+        public void StartMovement(IMovementStrategy strategy)
+        {
+            
+        }
+
+        public void FinalizeMovementWithBounce(IMovementStrategy strategy)
+        {
+            // var move = strategy.FinalMovement(_transform, _currentScale);
+            // move.Restart();
         }
     }
 }

@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Util.Handlers.Strategies;
 using Util.Handlers.Visitors;
 using Util.Pool;
 
@@ -16,6 +17,7 @@ namespace BoardItems
         int Column { get; }
         bool IsGem { get; set; }
         IBoardItemVisitor BoardVisitor { get; set; }
+        MovementVisitor MovementVisitor { get; set; }
         bool IsMove { get; set; }
         IBoardItem Copy();
         void RetrieveFromPool();
@@ -29,5 +31,10 @@ namespace BoardItems
         Vector3 GetPosition();
         void SetActive(bool active);
         UniTask Pop();
+    }
+    public interface IMoveable
+    {
+        void StartMovement(IMovementStrategy strategy);
+        void FinalizeMovementWithBounce(IMovementStrategy strategy);
     }
 }
