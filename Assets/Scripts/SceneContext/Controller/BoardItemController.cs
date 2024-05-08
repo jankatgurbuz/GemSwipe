@@ -41,16 +41,16 @@ namespace SceneContext.Controller
             {
                 for (int column = 0; column < _columnLength; column++)
                 {
-                    var item =TilePool.Instance.Retrieve();
+                    var item = TilePool.Instance.Retrieve();
                     item.SetPosition(_gridController.CellToLocal(row, column));
                 }
-            }  
+            }
         }
 
         private void AdjustBoardItems()
         {
             var levelData = _inGameController.LevelData;
-            
+
             _boardItems = new IBoardItem[_rowLength, _columnLength];
             _recursiveCheckArray = new bool[_rowLength, _columnLength];
             _combineItems = new List<IBoardItem>();
@@ -63,6 +63,21 @@ namespace SceneContext.Controller
                 temp.SetActive(true);
                 temp?.BoardVisitor?.Gem.SetColorAndAddSprite();
             }
+        }
+
+        public void Swipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        {
+            Debug.Log(firstClickRow + "-" + firstClickColumn + "-" + swipeRow + "-" + swipeColumn);
+
+            if (CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn))
+            {
+            }
+        }
+
+        private bool CheckSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        {
+            // todo: Swipe !! 
+            return true;
         }
     }
 }
