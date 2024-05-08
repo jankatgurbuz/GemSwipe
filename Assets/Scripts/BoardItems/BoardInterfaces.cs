@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Util.Handlers.Visitors;
 using Util.Pool;
@@ -15,9 +16,11 @@ namespace BoardItems
         int Column { get; }
         bool IsGem { get; set; }
         IBoardItemVisitor BoardVisitor { get; set; }
+        bool IsMove { get; set; }
         IBoardItem Copy();
         void RetrieveFromPool();
         void ReturnToPool();
+        void SetRowAndColumn(int row, int column);
     }
 
     public interface IItemBehavior
@@ -25,5 +28,6 @@ namespace BoardItems
         void SetPosition(Vector3 position);
         Vector3 GetPosition();
         void SetActive(bool active);
+        UniTask Pop();
     }
 }
