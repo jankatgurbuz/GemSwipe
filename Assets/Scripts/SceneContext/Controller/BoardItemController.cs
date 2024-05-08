@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using BoardItems;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Util.Pool.Tile;
 
 namespace SceneContext.Controller
 {
@@ -25,16 +26,33 @@ namespace SceneContext.Controller
 
         public UniTask Start()
         {
+            AdjustTile();
             AdjustBoardItems();
             return UniTask.CompletedTask;
         }
 
-        private void AdjustBoardItems()
+        private void AdjustTile()
         {
             var levelData = _inGameController.LevelData;
             _rowLength = levelData.RowLength;
             _columnLength = levelData.ColumnLength;
 
+            for (int row = 0; row < _rowLength; row++)
+            {
+                for (int column = 0; column < _columnLength; column++)
+                {
+                    var item =TilePool.Instance.Retrieve();
+                    item.SetPosition(_gridController.CellToLocal(row, column));
+                }
+            }
+            
+            
+        }
+
+        private void AdjustBoardItems()
+        {
+            var levelData = _inGameController.LevelData;
+            
             _boardItems = new IBoardItem[_rowLength, _columnLength];
             _recursiveCheckArray = new bool[_rowLength, _columnLength];
             _combineItems = new List<IBoardItem>();

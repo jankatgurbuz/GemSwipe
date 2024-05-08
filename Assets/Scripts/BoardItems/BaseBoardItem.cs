@@ -22,7 +22,6 @@ namespace BoardItems
         }
         public void RetrieveFromPool()
         {
-            Debug.Log("girdi");
             Item = PoolFactory.Instance.RetrieveFromPool<TPoolItem>();
         }
         public void ReturnToPool()
