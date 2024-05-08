@@ -6,7 +6,7 @@ namespace BoardItems
 {
     public class VoidArea : BaseBoardItem<VoidView>
     {
-        public override IBoardItemVisitor BoardVisitor { get; set; }
+        public sealed override IBoardItemVisitor BoardVisitor { get; set; }
         public VoidArea(int row, int column) : base(row, column)
         {
             BoardVisitor = new BoardItemVisitor(this);
@@ -17,6 +17,9 @@ namespace BoardItems
             return new VoidArea(Row, Column);
         }
 
-        
+        protected override void OnItemLifecycleTransition(bool isActive)
+        {
+            
+        }
     }
 }

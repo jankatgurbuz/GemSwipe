@@ -1,4 +1,5 @@
 using UnityEngine;
+using Util.Handlers.Strategies;
 using Util.Handlers.Visitors;
 using Util.Pool.Gem;
 
@@ -15,6 +16,13 @@ namespace BoardItems
             _color = color;
             IsGem = true;
             BoardVisitor = new BoardItemVisitor(this);
+        }
+        protected override void OnItemLifecycleTransition(bool isActive)
+        {
+            if (isActive)
+            {
+                MovementVisitor = new MovementVisitor(Item,new NormalMovementStrategy());
+            }
         }
         public override IBoardItem Copy()
         {

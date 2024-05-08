@@ -10,12 +10,14 @@ namespace BoardItems
     {
         [SerializeField] private int _row;
         [SerializeField] private int _column;
+
+        private event Action<bool> ItemLifecycleTransition;
         public TPoolItem Item { get; set; }
         public int Row => _row;
         public int Column => _column;
         public bool IsGem { get; set; } = false;
         public bool IsMove { get; set; } = false;
-        public abstract IBoardItem Copy();
+        public virtual MovementVisitor MovementVisitor { get; set; } = MovementVisitor.Empty;
 
         public virtual IBoardItemVisitor BoardVisitor
         {
@@ -23,9 +25,20 @@ namespace BoardItems
             set => throw new NotImplementedException("Setter for Visitor is not implemented.");
         }
 
+        public abstract IBoardItem Copy();
+        protected abstract void OnItemLifecycleTransition(bool isActive);
+
+        protected BaseBoardItem(int row, int column)
+        {
+            _row = row;
+            _column = column;
+            ItemLifecycleTransition += OnItemLifecycleTransition;
+        }
+
         public void RetrieveFromPool()
         {
             Item = PoolFactory.Instance.RetrieveFromPool<TPoolItem>();
+            ItemLifecycleTransition?.Invoke(true);
         }
 
         public void ReturnToPool()
@@ -34,6 +47,7 @@ namespace BoardItems
                 return;
 
             PoolFactory.Instance.ReturnToPool(Item);
+            ItemLifecycleTransition?.Invoke(false);
         }
 
         public async UniTask Pop()
@@ -42,17 +56,13 @@ namespace BoardItems
             {
                 return;
             }
+
             // score 
             await Item.Pop();
             ReturnToPool();
         }
 
-        protected BaseBoardItem(int row, int column)
-        {
-            _row = row;
-            _column = column;
-        }
-        
+
         public void SetRowAndColumn(int row, int column)
         {
             _row = row;
