@@ -13,6 +13,7 @@ namespace BoardItems
         public Gem(int row, int column,ItemColors color) : base(row, column)
         {
             _color = color;
+            IsGem = true;
             BoardVisitor = new BoardItemVisitor(this);
         }
         public override IBoardItem Copy()

@@ -12,18 +12,21 @@ namespace BoardItems
         public TPoolItem Item { get; set; }
         public int Row => _row;
         public int Column => _column;
-        
+        public bool IsGem { get; set; } = false;
+
         public abstract IBoardItem Copy();
-        
+
         public virtual IBoardItemVisitor BoardVisitor
         {
             get => throw new NotImplementedException("Getter for Visitor is not implemented.");
             set => throw new NotImplementedException("Setter for Visitor is not implemented.");
         }
+
         public void RetrieveFromPool()
         {
             Item = PoolFactory.Instance.RetrieveFromPool<TPoolItem>();
         }
+
         public void ReturnToPool()
         {
             if (Item == null)
@@ -50,7 +53,7 @@ namespace BoardItems
 
         public void SetActive(bool active)
         {
-           Item?.SetActive(active);
+            Item?.SetActive(active);
         }
     }
 }
