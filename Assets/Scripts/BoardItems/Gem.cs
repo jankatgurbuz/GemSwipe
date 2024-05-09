@@ -26,7 +26,10 @@ namespace BoardItems
         }
         public override IBoardItem Copy()
         {
-            return new Gem(Row, Column, _color);
+            return new Gem(Row, Column, _color)
+            {
+                Item = Item
+            };
         }
         public void SetColorAndAddSprite()
         {
