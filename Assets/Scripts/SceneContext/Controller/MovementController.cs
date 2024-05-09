@@ -57,6 +57,7 @@ namespace SceneContext.Controller
 
         public void Tick()
         {
+            // todo tasi ve sil-------------------
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Time.timeScale = 0.05f;
@@ -65,6 +66,9 @@ namespace SceneContext.Controller
             {
                 Time.timeScale = 1;
             }
+            
+            //------------------------------------
+            
             if (_movementItems == null || _movementItems.Count == 0)
                 return;
 
@@ -89,7 +93,7 @@ namespace SceneContext.Controller
                     }
                 }
 
-                item.BoardItem.MovementVisitor.MovementTime += deltaTime * 0.3f;
+                item.BoardItem.MovementVisitor.MovementTime += deltaTime * 0.25f;
                 var y = item.FirstPosition.y -
                         _movementSettings.AnimationCurve.Evaluate(item.BoardItem.MovementVisitor.MovementTime);
                 y = Mathf.Clamp(y, item.TargetPosition.y, 1000); // todo: magic number !!! 
