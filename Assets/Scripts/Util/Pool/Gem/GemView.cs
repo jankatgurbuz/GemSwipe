@@ -6,7 +6,7 @@ using Util.Handlers.Strategies;
 
 namespace Util.Pool.Gem
 {
-    public class GemView : MonoBehaviour, IPoolable, IItemBehavior,IMoveable
+    public class GemView : MonoBehaviour, IPoolable, IItemBehavior, IMoveable
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private SOGemSettings _gemSettings;
@@ -15,6 +15,7 @@ namespace Util.Pool.Gem
         private GameObject _gameObject;
         private Vector3 _currentScale;
         private Quaternion _currentRotation;
+        private Sequence _finalMovement;
 
         public void Awake()
         {
@@ -81,13 +82,14 @@ namespace Util.Pool.Gem
 
         public void StartMovement(IMovementStrategy strategy)
         {
-            
+            _finalMovement?.OnKill(ResetItem).Kill();
+            strategy.StartMovement(_transform).Restart();
         }
 
         public void FinalizeMovementWithBounce(IMovementStrategy strategy)
         {
-            // var move = strategy.FinalMovement(_transform, _currentScale);
-            // move.Restart();
+            _finalMovement = strategy.FinalMovement(_transform, _currentScale);
+            _finalMovement.Restart();
         }
     }
 }

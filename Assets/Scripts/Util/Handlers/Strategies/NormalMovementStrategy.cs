@@ -23,7 +23,7 @@ namespace Util.Handlers.Strategies
 
         public Sequence StartMovement(Transform transform)
         {
-            const float scaleRate = 0.01f;
+            const float scaleRate = 0.06f;
             var sequence = CreateSequence();
             sequence.Append(transform.DOScaleX(-scaleRate, 0.1f).SetRelative());
             sequence.Join(transform.DOScaleY(scaleRate, 0.1f).SetRelative());
@@ -32,7 +32,7 @@ namespace Util.Handlers.Strategies
         private static Sequence CreateSequence()
         {
             var sequence = DOTween.Sequence();
-            sequence.SetAutoKill(false);
+            
             sequence.Pause();
             return sequence;
         }
