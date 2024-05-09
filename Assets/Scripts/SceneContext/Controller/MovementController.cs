@@ -32,7 +32,7 @@ namespace SceneContext.Controller
             await UniTask.CompletedTask;
         }
 
-        public void Register(IBoardItem item, int row, int column, float delay)
+        public void Register(IBoardItem item, int row, int column, float delay, Transform bottomParent)
         {
             var firstPosition = item.GetPosition();
             if (_movementItems.ContainsKey((row, column)))
@@ -50,15 +50,24 @@ namespace SceneContext.Controller
                 BoardItem = item,
                 FirstPosition = firstPosition,
                 TargetPosition = _gridController.CellToLocal(item.Row, item.Column),
-                Delay = delay
+                Delay = delay,
+                BottomParent = bottomParent
             });
         }
 
         public void Tick()
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Time.timeScale = 0.05f;
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                Time.timeScale = 1;
+            }
             if (_movementItems == null || _movementItems.Count == 0)
                 return;
-            
+
             var deltaTime = Time.deltaTime;
             var removeList = new List<IBoardItem>();
             foreach (var item in _movementItems.Values)
@@ -67,9 +76,18 @@ namespace SceneContext.Controller
                     continue;
 
                 item.BoardItem.MovementVisitor.Delay += deltaTime;
-                
+
                 if (item.BoardItem.MovementVisitor.Delay < item.Delay)
                     continue;
+
+                if (item.BottomParent != null)
+                {
+                    var yState = (item.BoardItem.GetPosition() - item.BottomParent.position).y;
+                    if (yState < 1) // todo: offset =1
+                    {
+                        continue;
+                    }
+                }
 
                 item.BoardItem.MovementVisitor.MovementTime += deltaTime * 0.3f;
                 var y = item.FirstPosition.y -
@@ -105,6 +123,7 @@ namespace SceneContext.Controller
             public Vector3 FirstPosition;
             public Vector3 TargetPosition;
             public float Delay;
+            public Transform BottomParent;
         }
     }
 }

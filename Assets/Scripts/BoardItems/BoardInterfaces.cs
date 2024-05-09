@@ -31,6 +31,7 @@ namespace BoardItems
         Vector3 GetPosition();
         void SetActive(bool active);
         UniTask Pop();
+        Transform GetTransform();
     }
     public interface IMoveable
     {

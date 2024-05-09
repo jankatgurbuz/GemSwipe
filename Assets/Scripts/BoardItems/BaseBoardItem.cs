@@ -79,6 +79,12 @@ namespace BoardItems
             return Item.GetPosition();
         }
 
+        public Transform GetTransform()
+        {
+            return ((BoardItems.IItemBehavior)Item).GetTransform();
+        }
+
+
         public void SetActive(bool active)
         {
             Item?.SetActive(active);
