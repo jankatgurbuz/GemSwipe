@@ -151,7 +151,7 @@ namespace SceneContext.Controller
                 FindMatches(row, column + 1, color, false, combineItems, isFullBoardScan);
                 if (!isFullBoardScan)
                 {
-                    FindMatches(row, column - 1, color, true, combineItems, isFullBoardScan);
+                    FindMatches(row, column - 1, color, false, combineItems, isFullBoardScan);
                 }
             }
         }
@@ -258,18 +258,23 @@ namespace SceneContext.Controller
 
             if (CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn))
             {
-                var item = _boardItems[firstClickRow, firstClickColumn].Copy();
-                _boardItems[firstClickRow, firstClickColumn] = _boardItems[swipeRow, swipeColumn];
-                _boardItems[firstClickRow, firstClickColumn].SetRowAndColumn(firstClickRow,firstClickColumn);
-                _boardItems[swipeRow, swipeColumn] = item;
-                _boardItems[swipeRow, swipeColumn].SetRowAndColumn(swipeRow,swipeColumn);
-
+                Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+                
                 TravelForMatch(firstClickRow, firstClickColumn, false);
-                bool check = _popItems.Count > 0;
+                bool check = _popItems.Count > 2;
+         
+                
                 _popItems.Clear();
 
-                TravelForMatch(swipeRow, swipeColumn, false);
-                check = _popItems.Count > 0;
+
+                if (!check)
+                {
+                    TravelForMatch(swipeRow, swipeColumn, false);
+              
+                    
+                    check = _popItems.Count > 2;
+                }
+
                 _popItems.Clear();
 
                 if (check)
@@ -283,12 +288,8 @@ namespace SceneContext.Controller
                 }
                 else
                 {
-                    item = _boardItems[firstClickRow, firstClickColumn].Copy();
-                    _boardItems[firstClickRow, firstClickColumn] = _boardItems[swipeRow, swipeColumn];
-                    _boardItems[firstClickRow, firstClickColumn].SetRowAndColumn(firstClickRow,firstClickColumn);
-                    _boardItems[swipeRow, swipeColumn] = item;
-                    _boardItems[swipeRow, swipeColumn].SetRowAndColumn(swipeRow,swipeColumn);
-                    
+                    Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+
                     _boardItems[firstClickRow, firstClickColumn]
                         .SetPosition(_gridController.CellToLocal(firstClickRow, firstClickColumn));
 
@@ -298,9 +299,25 @@ namespace SceneContext.Controller
             }
         }
 
+        private void Swap(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        {
+            var item = _boardItems[firstClickRow, firstClickColumn].Copy();
+            _boardItems[firstClickRow, firstClickColumn] = _boardItems[swipeRow, swipeColumn];
+            _boardItems[swipeRow, swipeColumn] = item;
+            
+            _boardItems[swipeRow, swipeColumn].SetRowAndColumn(swipeRow, swipeColumn);
+            _boardItems[firstClickRow, firstClickColumn].SetRowAndColumn(firstClickRow, firstClickColumn);
+        }
+
         private bool CheckSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
         {
-            // todo: Swipe !! 
+            if (firstClickRow < 0 || firstClickColumn < 0 || firstClickRow >= _rowLength || firstClickColumn >= _columnLength|| _boardItems[firstClickRow, firstClickColumn].IsMove||
+                swipeRow < 0 || swipeColumn < 0 || swipeRow >= _rowLength || swipeColumn >= _columnLength|| _boardItems[swipeRow, swipeColumn].IsMove)
+            {
+                Debug.Log("false return");
+                return false;
+            }
+
             return true;
         }
     }
