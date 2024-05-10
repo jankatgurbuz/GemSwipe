@@ -16,19 +16,19 @@ namespace SceneContext.Controller
         private readonly SOMovementSettings _movementSettings;
         private readonly IGridController _gridController;
         private readonly DiContainer _container;
-        private Dictionary<ValueTuple<int, int>, MovementData> _movementItems;
-        private ValueTuple<int, int>[] _keys;
         private BoardItemController _boardItemController;
 
+        private Dictionary<ValueTuple<int, int>, MovementData> _movementItems;
+
         public MovementController(DiContainer container, SOMovementSettings movementSettings,
-            IGridController gridController,SignalBus signalBus)
+            IGridController gridController, SignalBus signalBus)
         {
             _movementSettings = movementSettings;
             _gridController = gridController;
             _container = container;
             signalBus.Subscribe<GameStateReaction>(GameStateOnReaction);
         }
-        
+
         private void GameStateOnReaction(GameStateReaction reaction)
         {
             if (reaction.GameStatus == GameController.GameStatus.Restart)
@@ -39,7 +39,10 @@ namespace SceneContext.Controller
 
         public async UniTask Start()
         {
+            // todo : signal must be used------
             _boardItemController = _container.Resolve<BoardItemController>();
+            //---------------------------------
+
             _movementItems = new Dictionary<(int, int), MovementData>();
             await UniTask.CompletedTask;
         }
@@ -93,7 +96,7 @@ namespace SceneContext.Controller
                     }
                 }
 
-                item.BoardItem.MovementVisitor.MovementTime += deltaTime * 0.25f;
+                item.BoardItem.MovementVisitor.MovementTime += deltaTime * _movementSettings.MovementSpeed;
                 var y = item.FirstPosition.y -
                         _movementSettings.AnimationCurve.Evaluate(item.BoardItem.MovementVisitor.MovementTime);
                 y = Mathf.Clamp(y, item.TargetPosition.y, 1000); // todo: magic number !!! 
@@ -117,13 +120,15 @@ namespace SceneContext.Controller
 
             if (removeList.Count > 0)
             {
-                _boardItemController.CheckPop();
+                // todo : signal must be used
+                _boardItemController.PopCheck();
             }
         }
+
         public UniTask Swipe(IBoardItem p1, IBoardItem p2)
         {
-            var t = p1.MovementVisitor.Swipe(_gridController.CellToLocal(p1.Row,p1.Column));
-            var t2=p2.MovementVisitor.Swipe(_gridController.CellToLocal(p2.Row,p2.Column));
+            var t = p1.MovementVisitor.Swipe(_gridController.CellToLocal(p1.Row, p1.Column));
+            var t2 = p2.MovementVisitor.Swipe(_gridController.CellToLocal(p2.Row, p2.Column));
 
             return UniTask.WhenAll(t, t2);
         }
@@ -136,7 +141,5 @@ namespace SceneContext.Controller
             public float Delay;
             public Transform BottomParent;
         }
-
-        
     }
 }

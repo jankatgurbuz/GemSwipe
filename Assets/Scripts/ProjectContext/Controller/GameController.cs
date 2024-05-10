@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Signals;
 using UnityEngine;
 using Zenject;
@@ -15,8 +14,9 @@ namespace ProjectContext.Controller
             StartGame,
             Restart,
             FailPanel,
-            SuccesPanel
+            SuccessPanel
         }
+
         public enum ScoreAndMove
         {
             Empty,
@@ -44,9 +44,10 @@ namespace ProjectContext.Controller
         {
             _signalBus.Fire(new GameStateReaction(GameStatus.FailPanel));
         }
+
         public void Success()
         {
-            _signalBus.Fire(new GameStateReaction(GameStatus.SuccesPanel));
+            _signalBus.Fire(new GameStateReaction(GameStatus.SuccessPanel));
         }
     }
 }

@@ -1,10 +1,6 @@
-using System;
 using Cysharp.Threading.Tasks;
-using ProjectContext.Controller;
-using Signals;
 using UnityEngine;
 using Util.Handlers;
-using Zenject;
 
 namespace SceneContext.Controller
 {
@@ -13,15 +9,15 @@ namespace SceneContext.Controller
         private readonly IGridController _gridController;
         private readonly BoardItemController _boardItemController;
         private readonly Camera _camera;
-        
+
         private Vector2 _initialTouchPosition;
         private float _dragThreshold = 50;
         private bool _isDrag;
 
-        private int _tempFirstClickRow = 0;
-        private int _tempFirstClickColumn = 0;
-     
-        public InteractionController(SignalBus signalBus, IGridController gridController, Camera camera,
+        private int _tempFirstClickRow;
+        private int _tempFirstClickColumn;
+
+        public InteractionController(IGridController gridController, Camera camera,
             BoardItemController boardItemController)
         {
             _gridController = gridController;
@@ -58,8 +54,8 @@ namespace SceneContext.Controller
                         return;
                     }
 
-                    int swipeRow = 0;
-                    int swipeColumn = 0;
+                    var swipeRow = 0;
+                    var swipeColumn = 0;
 
                     if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                     {
