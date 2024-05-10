@@ -57,18 +57,6 @@ namespace SceneContext.Controller
 
         public void Tick()
         {
-            // todo tasi ve sil-------------------
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Time.timeScale = 0.05f;
-            }
-            else if (Input.GetKeyUp(KeyCode.Space))
-            {
-                Time.timeScale = 1;
-            }
-            
-            //------------------------------------
-            
             if (_movementItems == null || _movementItems.Count == 0)
                 return;
 
