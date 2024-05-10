@@ -15,7 +15,10 @@ namespace Util.Pool.Gem
         private GameObject _gameObject;
         private Vector3 _currentScale;
         private Quaternion _currentRotation;
+        
         private Sequence _finalMovement;
+        private Sequence _swipe;
+        private Sequence _startMovement;
 
         public void Awake()
         {
@@ -36,6 +39,9 @@ namespace Util.Pool.Gem
         public void Inactive()
         {
             _transform.DOKill();
+            _startMovement?.Kill();
+            _swipe?.Kill();
+            _finalMovement.Kill();
             ResetItem();
         }
 
@@ -83,20 +89,29 @@ namespace Util.Pool.Gem
         public void StartMovement(IMovementStrategy strategy)
         {
             _finalMovement?.OnKill(ResetItem).Kill();
-            strategy.StartMovement(_transform).Restart();
+            _swipe?.OnKill(ResetItem).Kill();
+            
+            _startMovement = strategy.StartMovement(_transform);
+            _startMovement.Restart();
         }
 
         public void FinalizeMovementWithBounce(IMovementStrategy strategy)
         {
+            _startMovement?.OnKill(ResetItem).Kill();
+            _swipe?.OnKill(ResetItem).Kill();
+            
             _finalMovement = strategy.FinalMovement(_transform, _currentScale);
             _finalMovement.Restart();
         }
 
-        public async UniTask Swipe(IMovementStrategy movementStrategy,Vector3 position)
+        public async UniTask Swipe(IMovementStrategy movementStrategy, Vector3 position)
         {
-            var seq  =movementStrategy.Swipe(_transform,position);
-            seq.Restart();
-            await seq.AsyncWaitForCompletion().AsUniTask();
+            _startMovement?.OnKill(ResetItem).Kill();
+            _finalMovement?.OnKill(ResetItem).Kill();
+            
+            _swipe = movementStrategy.Swipe(_transform, position);
+            _swipe.Restart();
+            await _swipe.AsyncWaitForCompletion().AsUniTask();
         }
     }
 }

@@ -13,7 +13,15 @@ namespace ProjectContext.Controller
         {
             Empty,
             StartGame,
-            Restart
+            Restart,
+            FailPanel,
+            SuccesPanel
+        }
+        public enum ScoreAndMove
+        {
+            Empty,
+            Score,
+            Move
         }
 
         public GameController(SignalBus signalBus)
@@ -30,6 +38,15 @@ namespace ProjectContext.Controller
         public void RestartGame()
         {
             _signalBus.Fire(new GameStateReaction(GameStatus.Restart));
+        }
+
+        public void Fail()
+        {
+            _signalBus.Fire(new GameStateReaction(GameStatus.FailPanel));
+        }
+        public void Success()
+        {
+            _signalBus.Fire(new GameStateReaction(GameStatus.SuccesPanel));
         }
     }
 }
