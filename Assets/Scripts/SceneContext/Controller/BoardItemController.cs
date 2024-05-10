@@ -21,12 +21,14 @@ namespace SceneContext.Controller
 
         private int _rowLength = 0;
         private int _columnLength = 0;
+
         private IBoardItem[,] _boardItems;
         private bool[,] _recursiveCheckArray;
-        private HashSet<IBoardItem> _popItems;
+        private HashSet<IBoardItem> _itemsToPop;
         private List<IBoardItem> _tempMatchItems;
 
         private bool _lock = true;
+        private const int _matchCount = 2;
 
         #region Initialize
 
@@ -69,7 +71,7 @@ namespace SceneContext.Controller
 
             _boardItems = new IBoardItem[_rowLength, _columnLength];
             _recursiveCheckArray = new bool[_rowLength, _columnLength];
-            _popItems = new HashSet<IBoardItem>();
+            _itemsToPop = new HashSet<IBoardItem>();
             _tempMatchItems = new List<IBoardItem>();
 
             foreach (var item in levelData.BoardItem)
@@ -88,38 +90,36 @@ namespace SceneContext.Controller
 
         private async void OnReaction(GameStateReaction reaction)
         {
-            if (reaction.GameStatus == GameController.GameStatus.StartGame)
+            switch (reaction.GameStatus)
             {
-                AdjustTile();
-                AdjustBoardItems();
-                await UniTask.Delay(500);
-                _lock = false;
-                CheckPop();
-            }
-            else if (reaction.GameStatus == GameController.GameStatus.Restart)
-            {
-                foreach (var item in _boardItems)
+                case GameController.GameStatus.StartGame:
+                    AdjustTile();
+                    AdjustBoardItems();
+                    await UniTask.Delay(500);
+                    _lock = false;
+                    PopCheck();
+                    break;
+                case GameController.GameStatus.Restart:
                 {
-                    item.ReturnToPool();
-                }
+                    foreach (var item in _boardItems)
+                        item.ReturnToPool();
 
-                _gameController.StartGame();
-            }
-            else if (reaction.GameStatus == GameController.GameStatus.FailPanel)
-            {
-                _lock = true;
-            }
-            else if (reaction.GameStatus == GameController.GameStatus.SuccesPanel)
-            {
-                _lock = true;
+                    TilePool.Instance.Clear();
+                    _gameController.StartGame();
+                    break;
+                }
+                case GameController.GameStatus.FailPanel:
+                case GameController.GameStatus.SuccessPanel:
+                    _lock = true;
+                    break;
             }
         }
 
-        public void CheckPop()
+        public void PopCheck()
         {
             if (_lock)
                 return;
-            
+
             for (int i = 0; i < _rowLength; i++)
             {
                 for (int j = 0; j < _columnLength; j++)
@@ -129,7 +129,7 @@ namespace SceneContext.Controller
                 }
             }
 
-            PopHandle();
+            PopExecuter();
         }
 
         private void TravelForMatch(int row, int column, bool isFullBoardScan)
@@ -183,23 +183,23 @@ namespace SceneContext.Controller
 
         private void AddPopList()
         {
-            if (_tempMatchItems.Count <= 2) return;
+            if (_tempMatchItems.Count <= _matchCount) return; 
             foreach (var item in _tempMatchItems)
             {
-                _popItems.Add(item);
+                _itemsToPop.Add(item);
             }
         }
 
-        private void PopHandle()
+        private void PopExecuter()
         {
-            foreach (var item in _popItems)
+            foreach (var item in _itemsToPop)
             {
                 _signal.Fire(new ScoreAndMoveReaction(GameController.ScoreAndMove.Score));
                 item.Pop();
                 _boardItems[item.Row, item.Column] = new VoidArea(item.Row, item.Column);
             }
 
-            _popItems.Clear();
+            _itemsToPop.Clear();
             RecalculateBoardElements();
         }
 
@@ -210,12 +210,12 @@ namespace SceneContext.Controller
                 float delay = 0;
                 for (int row = 0; row < _rowLength; row++)
                 {
-                    ShiftBeadDown(_boardItems[row, column], ref delay);
+                    ShiftGemDown(_boardItems[row, column], ref delay);
                 }
             }
         }
 
-        private void ShiftBeadDown(IBoardItem boardItem, ref float delay)
+        private void ShiftGemDown(IBoardItem boardItem, ref float delay)
         {
             if (boardItem.IsGem)
                 return;
@@ -225,6 +225,7 @@ namespace SceneContext.Controller
 
             for (int i = row + 1; i <= _rowLength; i++)
             {
+                // swap with empty cell
                 if (i < _rowLength && _boardItems[i, column].IsGem)
                 {
                     var item = _boardItems[row, column] = _boardItems[i, column];
@@ -233,7 +234,8 @@ namespace SceneContext.Controller
                     Adjust(item, ref delay, i, column, GetParentTransform(row, column));
                     break;
                 }
-
+                
+                // If top of the board, create a gem.
                 if (i == _rowLength)
                 {
                     var isGenerate = _inGameController.LevelData.ColumnGenerationFlags[column];
@@ -287,78 +289,78 @@ namespace SceneContext.Controller
 
         #region Swipe
 
-        public async void Swipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        public async void Swipe(int firstGemRow, int firstGemColumn, int secondGemRow, int secondGemColumn)
         {
             if (_lock) return;
-            if (!CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn)) return;
-            
+            if (!CheckSwipe(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn)) return;
+
             _signal.Fire(new ScoreAndMoveReaction(GameController.ScoreAndMove.Move));
-            Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
-            var check = CheckMatchAfterSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
-            await SwipeAnim(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+            Swap(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn);
+            var check = CheckMatchAfterSwipe(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn);
+            await SwipeAnim(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn);
 
             if (check)
             {
-                CheckPop();
+                PopCheck();
             }
             else
             {
-                Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
-                await SwipeAnim(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+                Swap(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn);
+                await SwipeAnim(firstGemRow, firstGemColumn, secondGemRow, secondGemColumn);
             }
         }
 
-        private async UniTask SwipeAnim(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        private async UniTask SwipeAnim(int firstGemRow, int firstGemColumn, int secondGemRow, int secondGemColumn)
         {
-            _boardItems[firstClickRow, firstClickColumn].IsMove = true;
-            _boardItems[swipeRow, swipeColumn].IsMove = true;
+            _boardItems[firstGemRow, firstGemColumn].IsMove = true;
+            _boardItems[secondGemRow, secondGemColumn].IsMove = true;
 
-            await _movementController.Swipe(_boardItems[firstClickRow, firstClickColumn],
-                _boardItems[swipeRow, swipeColumn]);
+            await _movementController.Swipe(_boardItems[firstGemRow, firstGemColumn],
+                _boardItems[secondGemRow, secondGemColumn]);
 
-            _boardItems[firstClickRow, firstClickColumn].IsMove = false;
-            _boardItems[swipeRow, swipeColumn].IsMove = false;
+            _boardItems[firstGemRow, firstGemColumn].IsMove = false;
+            _boardItems[secondGemRow, secondGemColumn].IsMove = false;
 
             await UniTask.Yield();
         }
 
-        private bool CheckMatchAfterSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        private bool CheckMatchAfterSwipe(int firstGemRow, int firstGemColumn, int secondGemRow, int secondGemColumn)
         {
-            return IsMatchFound(firstClickRow, firstClickColumn) || IsMatchFound(swipeRow, swipeColumn);
+            return IsMatchFound(firstGemRow, firstGemColumn) || IsMatchFound(secondGemRow, secondGemColumn);
 
             bool IsMatchFound(int row, int column)
             {
                 TravelForMatch(row, column, false);
-                var isMatch = _popItems.Count > 2;
-                _popItems.Clear();
+                var isMatch = _itemsToPop.Count > _matchCount;
+                _itemsToPop.Clear();
                 return isMatch;
             }
         }
 
-        private void Swap(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        private void Swap(int firstGemRow, int firstGemColumn, int secondGemRow, int secondGemColumn)
         {
-            var item = _boardItems[firstClickRow, firstClickColumn].Copy();
-            _boardItems[firstClickRow, firstClickColumn] = _boardItems[swipeRow, swipeColumn];
-            _boardItems[swipeRow, swipeColumn] = item;
+            var item = _boardItems[firstGemRow, firstGemColumn].Copy();
+            _boardItems[firstGemRow, firstGemColumn] = _boardItems[secondGemRow, secondGemColumn];
+            _boardItems[secondGemRow, secondGemColumn] = item;
 
-            _boardItems[swipeRow, swipeColumn].SetRowAndColumn(swipeRow, swipeColumn);
-            _boardItems[firstClickRow, firstClickColumn].SetRowAndColumn(firstClickRow, firstClickColumn);
+            _boardItems[secondGemRow, secondGemColumn].SetRowAndColumn(secondGemRow, secondGemColumn);
+            _boardItems[firstGemRow, firstGemColumn].SetRowAndColumn(firstGemRow, firstGemColumn);
         }
 
-        private bool CheckSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        private bool CheckSwipe(int firstGemRow, int firstGemColumn, int secondGemRow, int secondGemColumn)
         {
-            return firstClickRow >= 0 &&
-                   firstClickColumn >= 0 &&
-                   firstClickRow < _rowLength &&
-                   firstClickColumn < _columnLength &&
-                   !_boardItems[firstClickRow, firstClickColumn].IsMove &&
-                   _boardItems[firstClickRow, firstClickColumn].IsGem &&
-                   swipeRow >= 0 &&
-                   swipeColumn >= 0 &&
-                   swipeRow < _rowLength &&
-                   swipeColumn < _columnLength &&
-                   !_boardItems[swipeRow, swipeColumn].IsMove &&
-                   _boardItems[swipeRow, swipeColumn].IsGem;
+            return firstGemRow >= 0 &&
+                   firstGemColumn >= 0 &&
+                   firstGemRow < _rowLength &&
+                   firstGemColumn < _columnLength &&
+                   !_boardItems[firstGemRow, firstGemColumn].IsMove &&
+                   _boardItems[firstGemRow, firstGemColumn].IsGem &&
+                   secondGemRow >= 0 &&
+                   secondGemColumn >= 0 &&
+                   secondGemRow < _rowLength &&
+                   secondGemColumn < _columnLength &&
+                   !_boardItems[secondGemRow, secondGemColumn].IsMove &&
+                   _boardItems[secondGemRow, secondGemColumn].IsGem;
         }
 
         #endregion

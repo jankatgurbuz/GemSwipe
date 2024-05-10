@@ -6,5 +6,6 @@ namespace SceneContext.View
     public class SOMovementSettings : ScriptableObject
     {
         public AnimationCurve AnimationCurve;
+        public float MovementSpeed = 0.25f;
     }
 }

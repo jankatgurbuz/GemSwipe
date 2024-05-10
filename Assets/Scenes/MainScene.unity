@@ -2552,7 +2552,7 @@ MonoBehaviour:
   _tmpMove: {fileID: 1590877844}
   _restartPanel: {fileID: 818303974}
   _successPanel: {fileID: 860010702}
-  _restartButon: {fileID: 646717833}
+  _restartButton: {fileID: 646717833}
   _successButton: {fileID: 564785352}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

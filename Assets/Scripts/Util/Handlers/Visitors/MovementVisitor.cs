@@ -39,7 +39,7 @@ namespace Util.Handlers.Visitors
 
         public UniTask Swipe(Vector3 vec)
         {
-            return _itemView==null ? UniTask.CompletedTask : _itemView.Swipe(_movementStrategy, vec);
+            return _itemView == null ? UniTask.CompletedTask : _itemView.Swipe(_movementStrategy, vec);
         }
     }
 }

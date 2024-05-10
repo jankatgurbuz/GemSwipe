@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,9 +8,7 @@ namespace Util.Pool
     public abstract class Pool<T> : Singleton<Pool<T>> where T : IPoolable
     {
         [SerializeField] private T _instantiatedItem;
-
         [SerializeField] private bool _isRegisterInFactory;
-
         [SerializeField] private bool _activateOnRetrieve;
 
         private List<T> _activeList;

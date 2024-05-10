@@ -53,11 +53,8 @@ namespace BoardItems
         public async UniTask Pop()
         {
             if (Item == null)
-            {
                 return;
-            }
 
-            // score 
             await Item.Pop();
             ReturnToPool();
         }
@@ -81,9 +78,8 @@ namespace BoardItems
 
         public Transform GetTransform()
         {
-            return ((BoardItems.IItemBehavior)Item).GetTransform();
+            return ((IItemBehavior)Item).GetTransform();
         }
-
 
         public void SetActive(bool active)
         {
