@@ -114,7 +114,7 @@ namespace SceneContext.Controller
             AddPopList();
         }
 
-        private void ResetAndFindMatches(int row, int column, bool rowOrColumn,bool isFullBoardScan)
+        private void ResetAndFindMatches(int row, int column, bool rowOrColumn, bool isFullBoardScan)
         {
             _tempMatchItems.Clear();
             Array.Clear(_recursiveCheckArray, 0, _recursiveCheckArray.Length);
@@ -207,6 +207,13 @@ namespace SceneContext.Controller
 
                 if (i == _rowLength)
                 {
+                    var isGenerate = _inGameController.LevelData.ColumnGenerationFlags[column];
+                    if (!isGenerate)
+                    {
+                        _boardItems[row, column] = new VoidArea(row, column);
+                        return;
+                    }
+
                     var item = _boardItems[row, column] = new Gem(row, column, GetRandomColor());
                     _boardItems[row, column].RetrieveFromPool();
                     _boardItems[row, column]
@@ -304,11 +311,13 @@ namespace SceneContext.Controller
                    firstClickRow < _rowLength &&
                    firstClickColumn < _columnLength &&
                    !_boardItems[firstClickRow, firstClickColumn].IsMove &&
+                   _boardItems[firstClickRow, firstClickColumn].IsGem &&
                    swipeRow >= 0 &&
                    swipeColumn >= 0 &&
                    swipeRow < _rowLength &&
                    swipeColumn < _columnLength &&
-                   !_boardItems[swipeRow, swipeColumn].IsMove;
+                   !_boardItems[swipeRow, swipeColumn].IsMove &&
+                   _boardItems[swipeRow, swipeColumn].IsGem;
         }
 
         #endregion
