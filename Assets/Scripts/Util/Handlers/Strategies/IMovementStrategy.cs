@@ -7,5 +7,6 @@ namespace Util.Handlers.Strategies
     {
         Sequence FinalMovement(Transform transform, Vector3 currentScale);
         Sequence StartMovement(Transform transform);
+        Sequence Swipe(Transform transform,Vector3 vec);
     }
 }

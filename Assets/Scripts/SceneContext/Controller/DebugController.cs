@@ -1,9 +1,10 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using Zenject;
 
 namespace SceneContext.Controller
 {
-    public class DebugController :ITickable
+    public class DebugController : ITickable
     {
         public void Tick()
         {
@@ -18,3 +19,4 @@ namespace SceneContext.Controller
         }
     }
 }
+#endif

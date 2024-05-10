@@ -91,5 +91,12 @@ namespace Util.Pool.Gem
             _finalMovement = strategy.FinalMovement(_transform, _currentScale);
             _finalMovement.Restart();
         }
+
+        public async UniTask Swipe(IMovementStrategy movementStrategy,Vector3 position)
+        {
+            var seq  =movementStrategy.Swipe(_transform,position);
+            seq.Restart();
+            await seq.AsyncWaitForCompletion().AsUniTask();
+        }
     }
 }
