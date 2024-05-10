@@ -13,35 +13,20 @@ namespace SceneContext.Controller
         private readonly IGridController _gridController;
         private readonly BoardItemController _boardItemController;
         private readonly Camera _camera;
-
-        private bool _lock = true;
+        
         private Vector2 _initialTouchPosition;
         private float _dragThreshold = 50;
         private bool _isDrag;
 
         private int _tempFirstClickRow = 0;
         private int _tempFirstClickColumn = 0;
-
+     
         public InteractionController(SignalBus signalBus, IGridController gridController, Camera camera,
             BoardItemController boardItemController)
         {
             _gridController = gridController;
             _boardItemController = boardItemController;
             _camera = camera;
-            signalBus.Subscribe<GameStateReaction>(OnReaction);
-        }
-
-        private void OnReaction(GameStateReaction reaction)
-        {
-            if (reaction.GameStatus == GameController.GameStatus.StartGame)
-            {
-                _lock = false;
-            }
-
-            if (reaction.GameStatus == GameController.GameStatus.Restart)
-            {
-                _lock = true;
-            }
         }
 
         public UniTask Start()
@@ -57,9 +42,6 @@ namespace SceneContext.Controller
 
         private void OnClick(InteractionPhase phase, Vector2 vec)
         {
-            if (_lock)
-                return;
-
             switch (phase)
             {
                 case InteractionPhase.Down:

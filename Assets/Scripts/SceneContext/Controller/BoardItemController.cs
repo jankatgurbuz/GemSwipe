@@ -16,6 +16,8 @@ namespace SceneContext.Controller
         private readonly IGridController _gridController;
         private readonly InGameController _inGameController;
         private readonly MovementController _movementController;
+        private readonly SignalBus _signal;
+        private readonly GameController _gameController;
 
         private int _rowLength = 0;
         private int _columnLength = 0;
@@ -24,22 +26,24 @@ namespace SceneContext.Controller
         private HashSet<IBoardItem> _popItems;
         private List<IBoardItem> _tempMatchItems;
 
+        private bool _lock = true;
 
         #region Initialize
 
         public BoardItemController(SignalBus signalBus, IGridController gridController,
-            InGameController inGameController, MovementController movementController)
+            InGameController inGameController, MovementController movementController, GameController gameController)
         {
             _inGameController = inGameController;
             _gridController = gridController;
             _movementController = movementController;
+            _gameController = gameController;
+            _signal = signalBus;
             signalBus.Subscribe<GameStateReaction>(OnReaction);
         }
 
         public UniTask Start()
         {
-            AdjustTile();
-            AdjustBoardItems();
+            Debug.Log("BoardItemController has been loaded");
             return UniTask.CompletedTask;
         }
 
@@ -82,16 +86,40 @@ namespace SceneContext.Controller
 
         #region POP
 
-        private void OnReaction(GameStateReaction reaction)
+        private async void OnReaction(GameStateReaction reaction)
         {
             if (reaction.GameStatus == GameController.GameStatus.StartGame)
             {
+                AdjustTile();
+                AdjustBoardItems();
+                await UniTask.Delay(500);
+                _lock = false;
                 CheckPop();
+            }
+            else if (reaction.GameStatus == GameController.GameStatus.Restart)
+            {
+                foreach (var item in _boardItems)
+                {
+                    item.ReturnToPool();
+                }
+
+                _gameController.StartGame();
+            }
+            else if (reaction.GameStatus == GameController.GameStatus.FailPanel)
+            {
+                _lock = true;
+            }
+            else if (reaction.GameStatus == GameController.GameStatus.SuccesPanel)
+            {
+                _lock = true;
             }
         }
 
         public void CheckPop()
         {
+            if (_lock)
+                return;
+            
             for (int i = 0; i < _rowLength; i++)
             {
                 for (int j = 0; j < _columnLength; j++)
@@ -166,6 +194,7 @@ namespace SceneContext.Controller
         {
             foreach (var item in _popItems)
             {
+                _signal.Fire(new ScoreAndMoveReaction(GameController.ScoreAndMove.Score));
                 item.Pop();
                 _boardItems[item.Row, item.Column] = new VoidArea(item.Row, item.Column);
             }
@@ -260,8 +289,10 @@ namespace SceneContext.Controller
 
         public async void Swipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
         {
-            if (!CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn)) return; // todo : IHH anim
-
+            if (_lock) return;
+            if (!CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn)) return;
+            
+            _signal.Fire(new ScoreAndMoveReaction(GameController.ScoreAndMove.Move));
             Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
             var check = CheckMatchAfterSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
             await SwipeAnim(firstClickRow, firstClickColumn, swipeRow, swipeColumn);

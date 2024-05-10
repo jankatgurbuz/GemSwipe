@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BoardItems;
 using Cysharp.Threading.Tasks;
+using ProjectContext.Controller;
 using SceneContext.View;
+using Signals;
 using UnityEngine;
 using Zenject;
 
@@ -19,11 +21,20 @@ namespace SceneContext.Controller
         private BoardItemController _boardItemController;
 
         public MovementController(DiContainer container, SOMovementSettings movementSettings,
-            IGridController gridController)
+            IGridController gridController,SignalBus signalBus)
         {
             _movementSettings = movementSettings;
             _gridController = gridController;
             _container = container;
+            signalBus.Subscribe<GameStateReaction>(GameStateOnReaction);
+        }
+        
+        private void GameStateOnReaction(GameStateReaction reaction)
+        {
+            if (reaction.GameStatus == GameController.GameStatus.Restart)
+            {
+                _movementItems.Clear();
+            }
         }
 
         public async UniTask Start()
