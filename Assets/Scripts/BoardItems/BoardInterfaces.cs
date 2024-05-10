@@ -37,5 +37,6 @@ namespace BoardItems
     {
         void StartMovement(IMovementStrategy strategy);
         void FinalizeMovementWithBounce(IMovementStrategy strategy);
+        UniTask Swipe(IMovementStrategy movementStrategy,Vector3 position);
     }
 }

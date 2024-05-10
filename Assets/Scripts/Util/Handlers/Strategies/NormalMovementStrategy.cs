@@ -29,6 +29,14 @@ namespace Util.Handlers.Strategies
             sequence.Join(transform.DOScaleY(scaleRate, 0.1f).SetRelative());
             return sequence;
         }
+
+        public Sequence Swipe(Transform transform,Vector3 vec)
+        {
+            var sequence = CreateSequence();
+            sequence.Append(transform.DOMove(vec,0.05f));
+            return sequence;
+        }
+
         private static Sequence CreateSequence()
         {
             var sequence = DOTween.Sequence();

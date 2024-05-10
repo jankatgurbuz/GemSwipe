@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BoardItems;
 using Cysharp.Threading.Tasks;
 using SceneContext.View;
@@ -108,6 +109,13 @@ namespace SceneContext.Controller
                 _boardItemController.CheckPop();
             }
         }
+        public UniTask Swipe(IBoardItem p1, IBoardItem p2)
+        {
+            var t = p1.MovementVisitor.Swipe(_gridController.CellToLocal(p1.Row,p1.Column));
+            var t2=p2.MovementVisitor.Swipe(_gridController.CellToLocal(p2.Row,p2.Column));
+
+            return UniTask.WhenAll(t, t2);
+        }
 
         private class MovementData
         {
@@ -117,5 +125,7 @@ namespace SceneContext.Controller
             public float Delay;
             public Transform BottomParent;
         }
+
+        
     }
 }

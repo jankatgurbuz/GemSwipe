@@ -22,7 +22,10 @@ namespace SceneContext.Installer
             Container.Bind<IGridController>().To<GridController>().AsSingle().WithArguments(_gridView).NonLazy();
             Container.BindInterfacesAndSelfTo<MovementController>().AsSingle().WithArguments(_movementSettings)
                 .NonLazy();
+
+#if UNITY_EDITOR
             Container.BindInterfacesAndSelfTo<DebugController>().AsSingle().NonLazy();
+#endif
         }
     }
 }

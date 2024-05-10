@@ -258,12 +258,13 @@ namespace SceneContext.Controller
 
         #region Swipe
 
-        public void Swipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        public async void Swipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
         {
             if (!CheckSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn)) return; // todo : IHH anim
 
             Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
             var check = CheckMatchAfterSwipe(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+            await SwipeAnim(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
 
             if (check)
             {
@@ -272,7 +273,22 @@ namespace SceneContext.Controller
             else
             {
                 Swap(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
+                await SwipeAnim(firstClickRow, firstClickColumn, swipeRow, swipeColumn);
             }
+        }
+
+        private async UniTask SwipeAnim(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
+        {
+            _boardItems[firstClickRow, firstClickColumn].IsMove = true;
+            _boardItems[swipeRow, swipeColumn].IsMove = true;
+
+            await _movementController.Swipe(_boardItems[firstClickRow, firstClickColumn],
+                _boardItems[swipeRow, swipeColumn]);
+
+            _boardItems[firstClickRow, firstClickColumn].IsMove = false;
+            _boardItems[swipeRow, swipeColumn].IsMove = false;
+
+            await UniTask.Yield();
         }
 
         private bool CheckMatchAfterSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
@@ -296,12 +312,6 @@ namespace SceneContext.Controller
 
             _boardItems[swipeRow, swipeColumn].SetRowAndColumn(swipeRow, swipeColumn);
             _boardItems[firstClickRow, firstClickColumn].SetRowAndColumn(firstClickRow, firstClickColumn);
-
-            _boardItems[firstClickRow, firstClickColumn]
-                .SetPosition(_gridController.CellToLocal(firstClickRow, firstClickColumn));
-
-            _boardItems[swipeRow, swipeColumn]
-                .SetPosition(_gridController.CellToLocal(swipeRow, swipeColumn));
         }
 
         private bool CheckSwipe(int firstClickRow, int firstClickColumn, int swipeRow, int swipeColumn)
