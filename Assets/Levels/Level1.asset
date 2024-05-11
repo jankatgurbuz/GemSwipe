@@ -79,7 +79,7 @@ MonoBehaviour:
   - rid: 7831880871034487229
   - rid: 7831880871034487230
   - rid: 7831880871034487231
-  ColumnGenerationFlags: 0101010100010101
+  ColumnGenerationFlags: 0101010101010100
   references:
     version: 2
     RefIds:

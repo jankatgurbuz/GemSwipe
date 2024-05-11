@@ -21,7 +21,7 @@ namespace SceneContext.Controller
 
         public async void Initialize()
         {
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = 120;
             DOTween.SetTweensCapacity(1250,500);
             
             var controllers = _diContainer.ResolveAll<IStartable>();
