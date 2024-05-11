@@ -44,9 +44,9 @@ namespace ProjectContext.Controller
                 case GameController.ScoreAndMove.Score:
                     _score++;
                     // todo: add score settings for magic numbers
-                    if (_score >= 150)
+                    if (_score >= 120)
                     {
-                        _score = 150;
+                        _score = 120;
                         _gameController.Success();
                     }
 
